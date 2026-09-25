@@ -1,2 +1,3 @@
 ultralytics==8.4.159
 paho-mqtt
+Flask
