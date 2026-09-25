@@ -1,0 +1,5 @@
+CATÁLOGO PROVISIONAL PARA CÁMARA SIMULADA
+
+200 archivos: 50 personas, 50 perros, 50 gatos y 50 aves.
+Se obtuvieron recortando las miniaturas de la lámina sintética generada en la conversación.
+Sirven para pruebas preliminares de CCamaraSimulada/YOLO, pero su resolución es limitada y no equivalen a 200 imágenes originales independientes de alta resolución.
