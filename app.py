@@ -27,8 +27,18 @@ def health():
 
 
 def iniciar_mqtt():
-    receptor = ReceptorMQTT()
-    receptor.f_escuchar()
+
+    print(">>> HILO MQTT INICIADO", flush=True)
+
+    try:
+        receptor = ReceptorMQTT()
+
+        print(">>> OBJETO ReceptorMQTT CREADO", flush=True)
+
+        receptor.f_escuchar()
+
+    except Exception as e:
+        print(">>> ERROR EN MQTT:", e, flush=True)
 
 
 if __name__ == "__main__":
