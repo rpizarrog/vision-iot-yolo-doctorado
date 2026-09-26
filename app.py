@@ -1,9 +1,14 @@
 from flask import Flask
 from threading import Thread
 import os
+import traceback
 
 from CReceptorMQTT import ReceptorMQTT
 
+
+# ============================================================
+# APLICACIÓN FLASK
+# ============================================================
 
 app = Flask(__name__)
 
@@ -13,45 +18,55 @@ def inicio():
     return """
     <h1>Sistema IoT Inteligente</h1>
     <h2>Servicio de Visión Artificial</h2>
-    <p>YOLO + MQTT funcionando en la nube.</p>
+    <p>Servidor Flask funcionando correctamente en Render.</p>
+    <p>Receptor MQTT ejecutándose en segundo plano.</p>
     """
 
 
 @app.route("/health")
 def health():
     return {
-        "estado": "activo",
-        "servicio": "Vision Artificial YOLO",
-        "mqtt": "escuchando"
+        "estado": "OK",
+        "servicio": "vision-iot-yolo-doctorado"
     }
 
 
+# ============================================================
+# RECEPTOR MQTT
+# ============================================================
+
 def iniciar_mqtt():
-<<<<<<< HEAD
+
     print(">>> Iniciando hilo MQTT...", flush=True)
 
-    receptor = ReceptorMQTT()
-
-    print(">>> Receptor MQTT creado. Iniciando escucha...", flush=True)
-
-    receptor.f_escuchar()
-=======
-
-    print(">>> HILO MQTT INICIADO", flush=True)
-
     try:
+
         receptor = ReceptorMQTT()
 
-        print(">>> OBJETO ReceptorMQTT CREADO", flush=True)
+        print(
+            ">>> Receptor MQTT creado. Iniciando escucha...",
+            flush=True
+        )
 
         receptor.f_escuchar()
 
-    except Exception as e:
-        print(">>> ERROR EN MQTT:", e, flush=True)
->>>>>>> e94b02f (Agregar diagnostico al hilo MQTT en Render)
+    except Exception as error:
 
+        print(
+            f">>> ERROR EN MQTT: {error}",
+            flush=True
+        )
+
+        traceback.print_exc()
+
+
+# ============================================================
+# INICIO DE LA APLICACIÓN
+# ============================================================
 
 if __name__ == "__main__":
+
+    print(">>> Iniciando servicio Flask + MQTT...", flush=True)
 
     # MQTT se ejecuta en un hilo independiente
     hilo_mqtt = Thread(
@@ -61,10 +76,21 @@ if __name__ == "__main__":
 
     hilo_mqtt.start()
 
-    # Puerto proporcionado por Render
-    puerto = int(os.environ.get("PORT", 5000))
+    print(">>> HILO MQTT INICIADO", flush=True)
+
+    # Puerto asignado automáticamente por Render
+    puerto = int(
+        os.environ.get("PORT", 5000)
+    )
+
+    print(
+        f">>> Iniciando Flask en puerto {puerto}",
+        flush=True
+    )
 
     app.run(
         host="0.0.0.0",
-        port=puerto
+        port=puerto,
+        debug=False,
+        use_reloader=False
     )
