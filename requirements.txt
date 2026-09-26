@@ -1,2 +1,3 @@
 paho-mqtt
 Flask
+ultralytics==8.4.159
